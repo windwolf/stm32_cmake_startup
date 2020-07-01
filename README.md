@@ -1,1 +1,1 @@
-# stm32startuptemplate
+# stm32 cmake project startup
