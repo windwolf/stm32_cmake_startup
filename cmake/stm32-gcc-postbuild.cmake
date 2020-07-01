@@ -4,6 +4,7 @@ set(HEX_TARGET ${PROJECT_NAME}.hex)
 set(MAP_TARGET ${PROJECT_NAME}.map)
 set(LSS_TARGET ${PROJECT_NAME}.lss)
 
+
 # create binary & hex files and show size of resulting firmware image
 add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
         COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${PROJECT_NAME}.elf> ${HEX_TARGET}

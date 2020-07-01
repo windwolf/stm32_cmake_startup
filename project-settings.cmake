@@ -1,4 +1,4 @@
-set(PROJECT_NAME NewJedaGoose)
+set(PROJECT_NAME NewJadeGoose)
 
 # Target-specific flags
 set(MCU_ARCH ARMCM3)

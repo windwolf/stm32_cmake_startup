@@ -7,10 +7,12 @@
         {
             "name": "Cortex Debug",
             "cwd": "${workspaceRoot}",
-            "executable": "./bin/executable.elf",
+            "executable": "./build/NewJadeGoose.elf",
             "request": "launch",
             "type": "cortex-debug",
-            "servertype": "jlink"
+            "servertype": "jlink",
+            "device": "STM32F103VB",
+            "interface": "swd",
         }
     ]
 }
