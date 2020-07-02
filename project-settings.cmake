@@ -18,3 +18,7 @@ option(USE_HAL_LIB "Enable HAL library" ON)
 option(USE_SYSTEM_VIEW "Enable Segger SystemView library" OFF)
 
 set(LIB_CONF_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src/LibConf)
+
+# threadx
+set(THREADX_ARCH "cortex_m3")
+set(THREADX_TOOLCHAIN "gnu")
