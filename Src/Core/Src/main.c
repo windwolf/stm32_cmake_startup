@@ -141,6 +141,7 @@ void board_init()
 
 int main(void)
 {
+  board_init();
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -271,10 +272,9 @@ void thread_0_entry(ULONG thread_input)
 
     /* Increment the thread counter.  */
     thread_0_counter++;
-
+    LL_GPIO_TogglePin(GPIOE, LL_GPIO_PIN_5);
     /* Sleep for 10 ticks.  */
-    tx_thread_sleep(10);
-
+    tx_thread_sleep(100);
     /* Set event flag 0 to wakeup thread 5.  */
     status = tx_event_flags_set(&event_flags_0, 0x1, TX_OR);
 
