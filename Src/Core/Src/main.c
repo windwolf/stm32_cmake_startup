@@ -112,15 +112,9 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
+
+void board_init()
 {
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -143,6 +137,18 @@ int main(void)
   MX_TIM1_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
+}
+
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+
   /* USER CODE BEGIN 2 */
   tx_kernel_enter();
   /* USER CODE END 2 */
@@ -158,7 +164,7 @@ void tx_application_define(void *first_unused_memory)
 
   /* Put system definition stuff in here, e.g. thread creates and other assorted
        create information.  */
-
+  
   /* Allocate the stack for thread 0.  */
   tx_byte_allocate(&byte_pool_0, (VOID **)&pointer, DEMO_STACK_SIZE, TX_NO_WAIT);
 
@@ -176,7 +182,7 @@ void tx_application_define(void *first_unused_memory)
   tx_thread_create(&thread_1, "thread 1", thread_1_entry, 1,
                    pointer, DEMO_STACK_SIZE,
                    16, 16, 4, TX_AUTO_START);
-
+  
   /* Allocate the stack for thread 2.  */
   tx_byte_allocate(&byte_pool_0, (VOID **)&pointer, DEMO_STACK_SIZE, TX_NO_WAIT);
 
