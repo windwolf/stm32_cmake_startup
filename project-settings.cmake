@@ -22,3 +22,4 @@ set(LIB_CONF_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src/LibConf)
 # threadx
 set(THREADX_ARCH "cortex_m3")
 set(THREADX_TOOLCHAIN "gnu")
+set(TX_USER_FILE ${CMAKE_CURRENT_SOURCE_DIR}/Src/LibConf/tx_user.h)
