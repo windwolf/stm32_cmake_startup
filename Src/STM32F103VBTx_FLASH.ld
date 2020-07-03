@@ -58,8 +58,6 @@ _estack = 0x20005000;    /* end of RAM */
 _Min_Heap_Size = 0x200;      /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */
 
-/* Set the RAM segment used end for threadx */
-__RAM_segment_used_end__ = 0; 
 
 /* Specify the memory areas */
 MEMORY
@@ -169,6 +167,7 @@ SECTIONS
   ._user_heap_stack :
   {
     . = ALIGN(8);
+    __RAM_segment_used_end__ = .; /* Set the RAM segment used end for threadx */
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
     . = . + _Min_Heap_Size;
