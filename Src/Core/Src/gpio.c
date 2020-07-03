@@ -130,6 +130,10 @@ void MX_GPIO_Init(void)
   /**/
   LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_1, LL_GPIO_MODE_INPUT);
 
+  LL_GPIO_SetPinMode(GPIOE, LL_GPIO_PIN_5, LL_GPIO_MODE_OUTPUT);
+
+  LL_GPIO_SetPinMode(GPIOE, LL_GPIO_PIN_6, LL_GPIO_MODE_OUTPUT);
+
   /* EXTI interrupt init*/
   NVIC_SetPriority(EXTI0_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
   NVIC_EnableIRQ(EXTI0_IRQn);
