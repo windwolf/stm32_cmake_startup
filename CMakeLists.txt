@@ -84,7 +84,7 @@ file(GLOB_RECURSE SRC_SOURCES_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Src/Core/Src/*.* 
 add_executable(${ELF_TARGET} ${SRC_SOURCES_PATH})
 
 target_compile_definitions(${ELF_TARGET} PUBLIC -D${MCU_LINE})
-target_link_libraries(${ELF_TARGET} PUBLIC CMSIS STM32F1xx_HAL_Driver threadx -lc -lm -lnosys)
+target_link_libraries(${ELF_TARGET} PUBLIC CMSIS STM32F1xx_HAL_Driver azrtos::threadx -lc -lm -lnosys)
 target_link_libraries(${ELF_TARGET} PRIVATE -T${LINKER_SCRIPT} ${EXTRA_LINK_FLAGS})
 
 target_include_directories(${ELF_TARGET}
