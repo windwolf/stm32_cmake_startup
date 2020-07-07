@@ -72,13 +72,14 @@ set(ELF_TARGET ${PROJECT_NAME}.elf)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Lib)
 
 
-
 # 驱动
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Src/Drivers)
 
 
-
-file(GLOB_RECURSE SRC_SOURCES_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Src/Core/Src/*.* ${CMAKE_CURRENT_SOURCE_DIR}/Src/Startup/*.*)
+file(GLOB_RECURSE SRC_SOURCES_PATH 
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/Core/*.* 
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/Bsp/*.* 
+  ${CMAKE_CURRENT_SOURCE_DIR}/Src/Startup/*.*)
 
 
 add_executable(${ELF_TARGET} ${SRC_SOURCES_PATH})
@@ -90,11 +91,11 @@ target_link_libraries(${ELF_TARGET} PRIVATE -T${LINKER_SCRIPT} ${EXTRA_LINK_FLAG
 target_include_directories(${ELF_TARGET}
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/Core/Inc
-    ${LIB_CONF_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/Bsp/Inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/LibConf
 )
-
 
 
 ## post build
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/stm32-gcc-postbuild.cmake)
-# include(${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_ROOT}/stm32-gcc-jlink.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/stm32-gcc-jlink.cmake)

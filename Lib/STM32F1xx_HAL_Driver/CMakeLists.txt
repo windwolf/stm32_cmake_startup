@@ -1,4 +1,11 @@
 
+# If the user provided an override, copy it to the custom directory
+if (NOT STM32_USER_INCLUDE_DIR)
+    message(FATAL_ERROR "Error: 请在project-settings.cmake中指定 STM32_USER_INCLUDE_DIR. 这个目录必须包含stm32_assert.h和stm32XXXX_hal_conf.h")
+endif()    
+
+
+
 file(GLOB_RECURSE STM32F1_HAL_SRC Src/*_hal.c Src/*_hal_*.c)
 file(GLOB_RECURSE STM32F1_LL_SRC Src/*_ll_*.c)
 
@@ -23,6 +30,6 @@ target_link_libraries(STM32F1xx_HAL_Driver
 target_include_directories(STM32F1xx_HAL_Driver
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/Inc
-        ${LIB_CONF_DIR}
+        ${STM32_USER_INCLUDE_DIR}
     PRIVATE
         Src)

@@ -53,14 +53,23 @@ void MX_GPIO_Init(void)
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOD);
 
   /**/
+  LL_GPIO_ResetOutputPin(GPIOE, LL_GPIO_PIN_5|LL_GPIO_PIN_6);
+
+  /**/
   LL_GPIO_ResetOutputPin(GPIOD, MOTOR1_DIR1_Pin|MOTOR1_DIR2_Pin|MOTOR2_DIR1_Pin|MOTOR2_DIR2_Pin);
 
   /**/
-  GPIO_InitStruct.Pin = LL_GPIO_PIN_2|LL_GPIO_PIN_3|LL_GPIO_PIN_4|LL_GPIO_PIN_5 
-                          |LL_GPIO_PIN_6|LL_GPIO_PIN_7|LL_GPIO_PIN_8|LL_GPIO_PIN_10 
-                          |LL_GPIO_PIN_12|LL_GPIO_PIN_13|LL_GPIO_PIN_14|LL_GPIO_PIN_15 
-                          |LL_GPIO_PIN_0|LL_GPIO_PIN_1;
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_2|LL_GPIO_PIN_3|LL_GPIO_PIN_4|LL_GPIO_PIN_7 
+                          |LL_GPIO_PIN_8|LL_GPIO_PIN_10|LL_GPIO_PIN_12|LL_GPIO_PIN_13 
+                          |LL_GPIO_PIN_14|LL_GPIO_PIN_15|LL_GPIO_PIN_0|LL_GPIO_PIN_1;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
+  LL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /**/
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_5|LL_GPIO_PIN_6;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   LL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /**/
@@ -129,10 +138,6 @@ void MX_GPIO_Init(void)
 
   /**/
   LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_1, LL_GPIO_MODE_INPUT);
-
-  LL_GPIO_SetPinMode(GPIOE, LL_GPIO_PIN_5, LL_GPIO_MODE_OUTPUT);
-
-  LL_GPIO_SetPinMode(GPIOE, LL_GPIO_PIN_6, LL_GPIO_MODE_OUTPUT);
 
   /* EXTI interrupt init*/
   NVIC_SetPriority(EXTI0_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));

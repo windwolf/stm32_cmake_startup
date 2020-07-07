@@ -242,9 +242,9 @@
 /* Determine if thread performance gathering is required by the application. When the following is
    defined, ThreadX gathers various thread performance information. */
 
-/*
+
 #define TX_THREAD_ENABLE_PERFORMANCE_INFO
-*/
+
 
 /* Determine if timer performance gathering is required by the application. When the following is
    defined, ThreadX gathers various timer performance information. */
