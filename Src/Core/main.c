@@ -1,4 +1,5 @@
 
+
 #include "main.h"
 
 #include "tx_api.h"
@@ -45,7 +46,7 @@ void tx_application_define(void *first_unused_memory)
   tx_byte_allocate(&byte_pool_main, (VOID **)&pointer, DEMO_STACK_SIZE, TX_NO_WAIT);
 
   /* Create the main thread.  */
-  UINT rtn = tx_thread_create(&thread_idle, "thread 0", Idle_threadEntry, 0,
+  uint32_t rtn = tx_thread_create(&thread_idle, "thread 0", Idle_threadEntry, 0,
                               pointer, DEMO_STACK_SIZE,
                               1, 1, TX_NO_TIME_SLICE, TX_AUTO_START);
 
