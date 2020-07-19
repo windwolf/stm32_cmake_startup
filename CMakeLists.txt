@@ -85,7 +85,16 @@ file(GLOB_RECURSE SRC_SOURCES_PATH
 add_executable(${ELF_TARGET} ${SRC_SOURCES_PATH})
 
 target_compile_definitions(${ELF_TARGET} PUBLIC -D${MCU_LINE})
-target_link_libraries(${ELF_TARGET} PUBLIC CMSIS STM32F1xx_HAL_Driver azrtos::threadx -lc -lm -lnosys)
+target_link_libraries(${ELF_TARGET} 
+  PUBLIC 
+    CMSIS 
+    STM32F1xx_HAL_Driver 
+    azrtos::threadx 
+    windwolf::CircleBuffer
+    windwolf::SerialPort
+    windwolf::Command
+    
+    -lc -lm -lnosys)
 target_link_libraries(${ELF_TARGET} PRIVATE -T${LINKER_SCRIPT} ${EXTRA_LINK_FLAGS})
 
 target_include_directories(${ELF_TARGET}

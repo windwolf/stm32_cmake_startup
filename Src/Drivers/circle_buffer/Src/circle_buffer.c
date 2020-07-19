@@ -1,5 +1,5 @@
 #include "stdint.h"
-#include "circle_queue/circle_buffer.h"
+#include "circle_buffer/circle_buffer.h"
 #include "stdlib.h"
 //#include "portable.h"
 
@@ -16,7 +16,6 @@ void CircleBuffer_Create(CircleBuffer *queue, void *dataPtr, CircleBuffer_UnitSi
     queue->head = 0;
     queue->count = 0;
     queue->tail = 0;
-    memset(CONVERT_TO_UCHAR_POINTER(dataPtr), 0, maxSize << unitSize);
 }
 
 void CircleBuffer_RegisterOperationNotify(CircleBuffer *queue, void (*OperationNotify)(CircleBuffer_OperationType type))

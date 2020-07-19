@@ -6,7 +6,7 @@ extern "C"
 #endif
 
 #include "stdio.h"
-#include "circle_queue/circle_buffer.h"
+#include "circle_buffer/circle_buffer.h"
 
     typedef enum
     {
@@ -27,25 +27,25 @@ extern "C"
         SERIAL_PORT_STATUS status;
         CircleBuffer *send_buffer;
         CircleBuffer *receive_buffer;
-        int32_t (*Init_HW)(SerialPort_Nortos *serial_port, void *init_data);
-        int32_t (*Open_HW)(SerialPort_Nortos *serial_port);
-        int32_t (*Close_HW)(SerialPort_Nortos *serial_port);
-        int32_t (*Send_Sync_HW)(SerialPort_Nortos *serial_port, char *data, uint32_t length);
-        int32_t (*Send_Async_HW)(SerialPort_Nortos *serial_port, char *data, uint32_t length);
-        int32_t (*Is_Send_Busy_HW)(SerialPort_Nortos *serial_port);
+        int32_t (*Init_HW)(struct SerialPort_Nortos *serial_port, void *init_data);
+        int32_t (*Open_HW)(struct SerialPort_Nortos *serial_port);
+        int32_t (*Close_HW)(struct SerialPort_Nortos *serial_port);
+        int32_t (*Send_Sync_HW)(struct SerialPort_Nortos *serial_port, char *data, uint32_t length);
+        int32_t (*Send_Async_HW)(struct SerialPort_Nortos *serial_port, char *data, uint32_t length);
+        uint32_t (*Is_Send_Busy_HW)(struct SerialPort_Nortos *serial_port);
 
     } SerialPort_Nortos;
 
-    SerialPort_Nortos *SerialPort_Init(SerialPort_Nortos *serial_port, //控制块
-                                       CircleBuffer *send_buffer,
-                                       CircleBuffer *receive_buffer,
-                                       int32_t (*Init_HW)(SerialPort_Nortos *serial_port, void *init_data), //初始化底层函数s
-                                       int32_t (*Open_HW)(SerialPort_Nortos *serial_port),
-                                       int32_t (*Close_HW)(SerialPort_Nortos *serial_port), //打开底层函数
-                                       int32_t (*Send_Sync_HW)(SerialPort_Nortos *serial_port, char *data, uint32_t length),
-                                       int32_t (*Send_Async_HW)(SerialPort_Nortos *serial_port, char *data, uint32_t length),
-                                       int32_t (*Is_Send_Busy_HW)(SerialPort_Nortos *serial_port),
-                                       void *init_data);
+    int32_t SerialPort_Init(SerialPort_Nortos *serial_port, //控制块
+                            CircleBuffer *send_buffer,
+                            CircleBuffer *receive_buffer,
+                            int32_t (*Init_HW)(SerialPort_Nortos *serial_port, void *init_data), //初始化底层函数s
+                            int32_t (*Open_HW)(SerialPort_Nortos *serial_port),
+                            int32_t (*Close_HW)(SerialPort_Nortos *serial_port), //打开底层函数
+                            int32_t (*Send_Sync_HW)(SerialPort_Nortos *serial_port, char *data, uint32_t length),
+                            int32_t (*Send_Async_HW)(SerialPort_Nortos *serial_port, char *data, uint32_t length),
+                            uint32_t (*Is_Send_Busy_HW)(SerialPort_Nortos *serial_port),
+                            void *init_data);
 
     void SerialPort_Open(SerialPort_Nortos *serial_port);
 

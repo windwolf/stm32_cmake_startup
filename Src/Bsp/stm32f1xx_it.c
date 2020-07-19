@@ -223,33 +223,7 @@ void EXTI1_IRQHandler(void)
   /* USER CODE END EXTI1_IRQn 1 */
 }
 
-/**
-  * @brief This function handles DMA1 channel4 global interrupt.
-  */
-void DMA1_Channel4_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Channel4_IRQn 0 */
 
-  /* USER CODE END DMA1_Channel4_IRQn 0 */
-  
-  /* USER CODE BEGIN DMA1_Channel4_IRQn 1 */
-
-  /* USER CODE END DMA1_Channel4_IRQn 1 */
-}
-
-/**
-  * @brief This function handles DMA1 channel5 global interrupt.
-  */
-void DMA1_Channel5_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Channel5_IRQn 0 */
-
-  /* USER CODE END DMA1_Channel5_IRQn 0 */
-  
-  /* USER CODE BEGIN DMA1_Channel5_IRQn 1 */
-
-  /* USER CODE END DMA1_Channel5_IRQn 1 */
-}
 
 /**
   * @brief This function handles DMA1 channel6 global interrupt.
@@ -293,18 +267,7 @@ void I2C1_ER_IRQHandler(void)
   /* USER CODE END I2C1_ER_IRQn 1 */
 }
 
-/**
-  * @brief This function handles USART1 global interrupt.
-  */
-void USART1_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART1_IRQn 0 */
 
-  /* USER CODE END USART1_IRQn 0 */
-  /* USER CODE BEGIN USART1_IRQn 1 */
-
-  /* USER CODE END USART1_IRQn 1 */
-}
 
 /* USER CODE BEGIN 1 */
 

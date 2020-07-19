@@ -27,12 +27,14 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "serial_port/serial_port_rtos.h"
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
-
+SerialPort_Rtos bsp_usart1;
 /* USER CODE END Private defines */
+
+void Bsp_Usart1_Init();
 
 void MX_USART1_UART_Init(void);
 

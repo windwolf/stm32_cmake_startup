@@ -58,11 +58,8 @@ uint8_t CircleBuffer_SyncHead(CircleBuffer *queue, uint32_t newHead);
 uint8_t CircleBuffer_SyncTail(CircleBuffer *queue, uint32_t newTail);
 int32_t CircleBuffer_Enqueue(CircleBuffer *queue, void *valuePtr, uint32_t length, uint8_t allowCoverTail);
 int32_t CircleBuffer_Dequeue(CircleBuffer *queue, void *valuePtr, uint32_t length);
-int32_t CircleBuffer_PeekToEnd(CircleBuffer *queue, void **valuePtr, uint32_t *length);
+uint8_t CircleBuffer_PeekToEnd(CircleBuffer *queue, void **valuePtr, uint32_t *length);
 
 void CircleBuffer_RegisterOperationNotify(CircleBuffer *queue, void (*OperationNotify)(CircleBuffer_OperationType type));
 
-
 #endif //__WINDWOLF_CIRCLE_BUFFER_H_
-
-

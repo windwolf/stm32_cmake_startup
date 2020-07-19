@@ -1,3 +1,6 @@
 [submodule "Lib/threadx"]
 	path = Lib/threadx
 	url = ../../azure-rtos/threadx.git
+[submodule "Src/Drivers/command"]
+	path = Src/Drivers/command
+	url = ../command_parser.git

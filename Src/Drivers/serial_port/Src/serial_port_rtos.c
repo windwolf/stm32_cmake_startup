@@ -1,31 +1,50 @@
 #include "serial_port/common.h"
 #include "serial_port/serial_port_rtos.h"
 
-static inline SerialPort_SetStatusFlags(TX_EVENT_FLAGS_GROUP *status, ULONG flag)
+static inline void SerialPort_SetStatusFlags(TX_EVENT_FLAGS_GROUP *status, ULONG flag)
 {
     tx_event_flags_set(status, flag, TX_OR);
 }
-static inline SerialPort_ClearStatusFlags(TX_EVENT_FLAGS_GROUP *status, ULONG flag)
+static inline void SerialPort_ClearStatusFlags(TX_EVENT_FLAGS_GROUP *status, ULONG flag)
 {
     tx_event_flags_set(status, ~flag, TX_AND);
 }
-static inline SerialPort_WaitForStatusFlags(TX_EVENT_FLAGS_GROUP *status, ULONG flag)
+static inline void SerialPort_WaitForStatusFlags(TX_EVENT_FLAGS_GROUP *status, ULONG flag)
 {
     ULONG actualFlags;
     tx_event_flags_get(status, flag, TX_AND, &actualFlags, TX_WAIT_FOREVER);
 }
 
-SerialPort_Rtos *SerialPort_Init(SerialPort_Rtos *serial_port,
-                                 char *name,
-                                 CircleBuffer *send_buffer,
-                                 CircleBuffer *receive_buffer,
-                                 int32_t (*Init_HW)(SerialPort_Rtos *serial_port, void *init_data), //初始化底层函数s
-                                 int32_t (*Open_HW)(SerialPort_Rtos *serial_port),
-                                 int32_t (*Close_HW)(SerialPort_Rtos *serial_port), //打开底层函数
-                                 int32_t (*Send_Sync_HW)(SerialPort_Rtos *serial_port, char *data, uint32_t length),
-                                 int32_t (*Send_Async_HW)(SerialPort_Rtos *serial_port, char *data, uint32_t length),
-                                 int32_t (*Is_Send_Busy_HW)(SerialPort_Rtos *serial_port),
-                                 void *init_data)
+static void SerialPort_Send_Async_Buffered_Internal(SerialPort_Rtos *serial_port)
+{
+    if (!serial_port->Is_Send_Busy_HW(serial_port))
+    {
+        if (CircleBuffer_IsFull(serial_port->send_buffer))
+        {
+            SerialPort_ClearStatusFlags(&(serial_port->status), SERIAL_PORT_SEND_AVAILABLE);
+        }
+
+        char *data;
+        uint32_t length;
+        CircleBuffer_PeekToEnd(serial_port->send_buffer, (void **)&data, &length);
+        if (length > 0)
+        {
+            serial_port->Send_Async_HW(serial_port, data, length);
+        };
+    }
+}
+
+int32_t SerialPort_Init(SerialPort_Rtos *serial_port,
+                        char *name,
+                        CircleBuffer *send_buffer,
+                        CircleBuffer *receive_buffer,
+                        int32_t (*Init_HW)(SerialPort_Rtos *serial_port, void *init_data), //初始化底层函数s
+                        int32_t (*Open_HW)(SerialPort_Rtos *serial_port),
+                        int32_t (*Close_HW)(SerialPort_Rtos *serial_port), //打开底层函数
+                        int32_t (*Send_Sync_HW)(SerialPort_Rtos *serial_port, char *data, uint32_t length),
+                        int32_t (*Send_Async_HW)(SerialPort_Rtos *serial_port, char *data, uint32_t length),
+                        uint32_t (*Is_Send_Busy_HW)(SerialPort_Rtos *serial_port),
+                        void *init_data)
 {
     serial_port->name = name;
 
@@ -39,11 +58,12 @@ SerialPort_Rtos *SerialPort_Init(SerialPort_Rtos *serial_port,
     serial_port->Send_Async_HW = Send_Async_HW;
     serial_port->Is_Send_Busy_HW = Is_Send_Busy_HW;
 
-    tx_mutex_create($(serial_port->send_busy), name, 0);
-    tx_mutex_create($(serial_port->receive_busy), name, 0);
+    tx_mutex_create(&(serial_port->send_busy), name, TX_NO_INHERIT);
+    tx_mutex_create(&(serial_port->receive_busy), name, TX_NO_INHERIT);
 
     tx_event_flags_create(&(serial_port->status), name);
     SerialPort_SetStatusFlags(&(serial_port->status), SERIAL_PORT_SEND_AVAILABLE);
+    return 0;
 }
 
 void SerialPort_Open(SerialPort_Rtos *serial_port)
@@ -92,7 +112,7 @@ int32_t SerialPort_Send_Async(SerialPort_Rtos *serial_port, char *data, uint32_t
             actualLength = CircleBuffer_Enqueue(serial_port->send_buffer, data, length, 0);
             ENABLE_INTERUPT
 
-            SerialPort_Send_Async_Buffered_Internal(serial_port->send_buffer);
+            SerialPort_Send_Async_Buffered_Internal(serial_port);
         } while (actualLength != length);
     }
 
@@ -100,30 +120,15 @@ int32_t SerialPort_Send_Async(SerialPort_Rtos *serial_port, char *data, uint32_t
     return actualLength;
 }
 
-static void SerialPort_Send_Async_Buffered_Internal(SerialPort_Rtos *serial_port)
-{
-    if (!serial_port->Is_Send_Busy_HW(serial_port))
-    {
-        if (CircleBuffer_IsFull(serial_port->send_buffer))
-        {
-            SerialPort_ClearStatusFlags(&(serial_port->status), SERIAL_PORT_SEND_AVAILABLE);
-        }
-
-        char *data;
-        uint32_t length;
-        CircleBuffer_PeekToEnd(serial_port->send_buffer, &data, &length);
-        if (length > 0)
-        {
-            serial_port->Send_Async_HW(serial_port, data, length);
-        };
-    }
-}
-
 void SerialPort_Sended_Notify(SerialPort_Rtos *serial_port, uint32_t newTail)
 {
+
     CircleBuffer_SyncTail(serial_port->send_buffer, newTail);
     SerialPort_SetStatusFlags(&(serial_port->status), SERIAL_PORT_SEND_AVAILABLE);
-    SerialPort_Send_Async_Buffered_Internal(serial_port);
+    if (serial_port->send_buffer != NULL)
+    {
+        SerialPort_Send_Async_Buffered_Internal(serial_port);
+    }
 }
 
 int32_t SerialPort_Receive_Async(SerialPort_Rtos *serial_port, char *data, uint32_t length)

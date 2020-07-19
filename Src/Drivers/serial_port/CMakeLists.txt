@@ -11,7 +11,7 @@ target_link_libraries(SerialPort
     PUBLIC
         azrtos::threadx
         windwolf::IoBuffer
-        windwolf::CircleQueue)
+        windwolf::CircleBuffer)
 
 target_include_directories(SerialPort
     PUBLIC
