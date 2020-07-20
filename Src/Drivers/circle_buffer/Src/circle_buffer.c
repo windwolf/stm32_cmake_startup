@@ -1,6 +1,7 @@
 #include "stdint.h"
 #include "circle_buffer/circle_buffer.h"
 #include "stdlib.h"
+#include "string.h"
 //#include "portable.h"
 
 #define CONVERT_TO_UINT8_POINTER(a) ((uint8_t *)((void *)(a)))
@@ -55,7 +56,7 @@ inline void *CircleBuffer_GetTailPointer(CircleBuffer *queue)
 
 uint8_t CircleBuffer_SyncHead(CircleBuffer *queue, uint32_t newHead)
 {
-    uint32_t tail = queue->tail;
+    //uint32_t tail = queue->tail;
     uint32_t size = queue->size;
     uint32_t count = queue->count;
     uint32_t head = queue->head;
